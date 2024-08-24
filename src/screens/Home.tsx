@@ -1,15 +1,38 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Header from "../Header";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from "react";
+import shopping from '../../src/assets/shopping_list.png';
+import { Product } from "../products";
 
 
 export function Home() {
     const[productName, setProductName]= useState('');
-   
+    const [products,setProducts]= useState<string[]>([]);
+
+
+
 
     function handleProductAdd(){
-
+        if(products.includes(productName)){
+            return Alert.alert("Produto já cadastrado","Já existe um produto na lista com esse nome.")
+        }
+            setProducts((prevState)=>[...prevState, productName]);
+            setProductName('');
+        
+    }
+     function handleProductRemove(name: string){
+        //console.log(`Produto Removido! ${name}`);
+        Alert.alert("Remover",`Deseja remover o produto ${name}?`,[
+            {
+                text:'Sim',
+                onPress: () => setProducts(prevState => prevState.filter(product => product != name))
+            },
+            {
+                text:'Não',
+                style: 'cancel'
+            }
+        ])
     }
 
 
@@ -19,7 +42,6 @@ export function Home() {
         <View style={styles.container}>
            
             <Header></Header>
-
             
 
             <View style={styles.inputContainer}>
@@ -39,8 +61,44 @@ export function Home() {
                 <AntDesign style={styles.txtButton}name="pluscircleo" size={16} color="black" />
             </TouchableOpacity>
            
-            </View>
+            <View style={styles.containerProductsText}>
+
             
+            
+
+
+
+
+            </View>
+
+            </View>
+
+            
+            <FlatList
+            data={products}
+            keyExtractor={item => item} 
+            renderItem={({item})=> (
+            <Product name={item} onRemove={()=> handleProductRemove(item)}/>
+            )} 
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={products.length <= 0 && styles.list}
+            ListEmptyComponent={()=>(
+                
+
+                <View style={styles.ListEmpty}>
+                <Image style={styles.imageListEmpty} source={shopping}></Image>
+                <Text style={styles.listEmptyText}>Você ainda não tem produtos na lista de compra </Text>  
+                <Text style={styles.EmptyText}> Adicione produtos e organize sua lista de compras</Text>
+
+                </View>
+            )}
+        /> 
+
+
+               
+
+
+
 
 
 
@@ -59,7 +117,7 @@ const styles = StyleSheet.create({
     inputContainer:{
         justifyContent:"center",
         flexDirection:"row",
-        top:"-8%",
+        top:"-6%",
         height:54,
         paddingLeft: 24,
         paddingRight: 24,
@@ -88,6 +146,35 @@ const styles = StyleSheet.create({
     txtButton:{
         margin:"auto",
         color:"white"
+    },
+    containerProductsText:{
+
+
+
+    },
+    ListEmpty:{
+        flex:1,
+        justifyContent:"center",
+        flexDirection:'column',
+        alignItems:"center",
+        paddingVertical: 48,
+        paddingHorizontal: 20,
+        borderTopColor: "#D9D9D9",
+        borderTopWidth: 1,
+
+    },
+    listEmptyText:{
+        color:"#808080",
+        fontWeight:'bold',
+        textAlign:"center",
+        fontSize:14
+    },
+    EmptyText:{
+        color:"#808080",
+        fontSize:14
+    },
+    list:{
+      
     }
 
 })
