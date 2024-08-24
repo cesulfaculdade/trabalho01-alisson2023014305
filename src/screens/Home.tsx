@@ -36,7 +36,7 @@ export function Home() {
                 style={styles.button} 
                 onPress={handleProductAdd}>
 
-                <AntDesign name="pluscircleo" size={24} color="black" />
+                <AntDesign style={styles.txtButton}name="pluscircleo" size={16} color="black" />
             </TouchableOpacity>
            
             </View>
@@ -57,21 +57,36 @@ const styles = StyleSheet.create({
     },
     inputContainer:{
         justifyContent:"center",
-
+        flexDirection:"row",
+        top:"-8%",
+        height:54,
+        paddingLeft: 24,
+        paddingRight: 24,
     },
     input:{
-        padding:16,
-        borderColor:"#808080",
-        borderWidth:0.5,
+        padding: 16,
+        textAlign: "center",
+        borderRadius: 6,
+        borderColor: "#808080",
+        borderWidth: 0.5,
+        backgroundColor: "white",
+        flex:1,
+        fontSize:16,
         
-
 
     },
     button:{
+        borderRadius: 6,
+        backgroundColor: "#31C667",
+        height: 52,
+        width: 52,
+        marginLeft: 4,
+        justifyContent:"center"
 
-        backgroundColor:"31C667"
-
-
+    },
+    txtButton:{
+        margin:"auto",
+        color:"white"
     }
 
 })
