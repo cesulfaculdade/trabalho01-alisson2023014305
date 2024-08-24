@@ -4,13 +4,16 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from "react";
 import shopping from '../../src/assets/shopping_list.png';
 import { Product } from "../products";
-import ListLayout from "../ProductCount";
+import ProductCount from '../ProductCount'
+import { ListLayout } from "../ProductFinished";
+
 
 
 export function Home() {
     const [productName, setProductName] = useState('');
     const [products, setProducts] = useState<string[]>([]);
     const [productConcluid, setProductConcluid] = useState<string[]>([]);
+
 
 
 
@@ -22,8 +25,7 @@ export function Home() {
         setProductName('');
     }
 
-
-    function handleProductRemove(name: string) {
+    function handleProductRemove(name: string ) {
         Alert.alert("Remover", `Deseja remover o produto ${name}?`, [
             {
                 text: 'Sim',
@@ -63,13 +65,13 @@ export function Home() {
             </View>
             <View>
                 <View style={styles.CounterText}>
-                    <ListLayout
+                    <ProductCount
                         name={"Produtos"}
                         color="#31C667"
                         numeros={products.length}
                     />
 
-                    <ListLayout
+                    <ProductCount
                         name={"Finalizados"}
                         color="#7A4A9E"
                         numeros={productConcluid.length}
@@ -84,7 +86,7 @@ export function Home() {
                 data={products}
                 keyExtractor={item => item}
                 renderItem={({ item }) => (
-                    <Product name={item} onRemove={() => handleProductRemove(item)} />
+                    <ListLayout name={item} removeItem={() => handleProductRemove(item)}></ListLayout>
                 )}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={products.length <= 0 && styles.list}
@@ -174,7 +176,8 @@ const styles = StyleSheet.create({
         marginRight: "10%",
         width: "80%",
         marginBottom: 20,
-        paddingBottom:20
+        paddingBottom:20,
+
     },
     list: {
 

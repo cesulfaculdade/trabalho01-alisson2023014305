@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { style } from "./styles"
+import { style } from '../ProductCount/styles'
 
 type Props = {
     color: string;
@@ -7,7 +7,7 @@ type Props = {
     numeros: number
 }
 
-export default function ListLayout({ color, name, numeros }: Props) {
+export default function ProductCount({ color, name, numeros }: Props) {
     return (
         <View style={{ flexDirection: "row", height: 19 }} >
             <Text style={{ color: color, fontWeight: "bold" }}>
