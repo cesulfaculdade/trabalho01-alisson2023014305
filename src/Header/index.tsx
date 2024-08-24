@@ -9,7 +9,7 @@ export default function Header(){
 
         <Text style={style.TextHeader}>
 
-            Lista de compras
+            Lista de Compras
 
         </Text>
 
