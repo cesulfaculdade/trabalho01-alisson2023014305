@@ -40,7 +40,7 @@ export function Home() {
             </TouchableOpacity>
            
             </View>
-            <View></View>
+            
 
 
 
