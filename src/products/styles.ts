@@ -24,14 +24,27 @@ export const styles = StyleSheet.create({
         alignSelf:"center",
      
     },
-    
+    ProductDescription: {
+        flex: 1,
+        fontSize: 14,
+        fontWeight: "regular",
+        color: "#262626",
+        marginHorizontal: 8,
+      },
+      ProductDone: {
+        flex: 1,
+        fontSize: 14,
+        fontWeight: "regular",
+        color: "#808080",
+        marginHorizontal: 8,
+        textDecorationLine: "line-through",
+      },
+      buttonRemove: {
+        width: 32,
+        height: 32,
+        alignItems: "center",
+        justifyContent: "center"
+      },
+      radioButton: {},
+    });
 
-    name:{
-        color:"#262626",
-        marginRight:"auto",
-        marginLeft:8
-    }
-
-
-
-})

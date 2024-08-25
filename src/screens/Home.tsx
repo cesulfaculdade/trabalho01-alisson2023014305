@@ -5,38 +5,61 @@ import { useState } from "react";
 import shopping from '../../src/assets/shopping_list.png';
 import { Product } from "../products";
 import ProductCount from '../ProductCount'
-import { ListLayout } from "../ProductFinished";
+import { MaterialIcons } from "@expo/vector-icons";
 
+type Product = {
+    name: string;
+    done: boolean;
+  };
 
-
-export function Home() {
-    const [productName, setProductName] = useState('');
-    const [products, setProducts] = useState<string[]>([]);
-    const [productConcluid, setProductConcluid] = useState<string[]>([]);
-
-
-
+  export function Home() {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [productName, setProductName] = useState("");
+  
+    const productDone = products.reduce((acc, product) => {
+      return product.done ? acc + 1 : acc;
+    }, 0);
 
     function handleProductAdd() {
-        if (products.includes(productName)) {
-            return Alert.alert("Produto já cadastrado", "Já existe um produto na lista com esse nome.")
+        if (products.filter(({ name }) => name === productName).length >= 1) {
+            return Alert.alert(
+              "Produto já cadastrado!",
+              "Já existe um produto na lista com este nome!"
+            );
+          }
+          if (productName.length === 0) {
+            return Alert.alert("Adicione um produto válido");
+          }
+          setProducts((prevState) => [
+            ...prevState,
+            { name: productName, done: false },
+          ]);
+          setProductName("");
         }
-        setProducts((prevState) => [...prevState, productName]);
-        setProductName('');
-    }
 
-    function handleProductRemove(name: string ) {
-        Alert.alert("Remover", `Deseja remover o produto ${name}?`, [
-            {
-                text: 'Sim',
-                onPress: () => setProducts(prevState => prevState.filter(product => product != name))
-            },
-            {
-                text: 'Não',
-                style: 'cancel'
-            }
-        ])
-    }
+        function handleProductRemove(name: string) {
+            Alert.alert("Remover", `Deseja remover o produto ${name}?`, [
+              {
+                text: "Sim",
+                onPress: () =>
+                  setProducts((prevState) =>
+                    prevState.filter((product) => product.name !== name)
+                  ),
+              },
+              {
+                text: "Não",
+                style: "cancel",
+              },
+            ]);}
+
+    function handleProductDone(name: string) {
+        setProducts((prevState) =>
+          prevState.map((product) =>
+            product.name === name ? { ...product, done: !product.done } : product
+          )
+        );
+      }
+    
 
     return (
 
@@ -74,20 +97,21 @@ export function Home() {
                     <ProductCount
                         name={"Finalizados"}
                         color="#7A4A9E"
-                        numeros={productConcluid.length}
+                        numeros={productDone}
                     />
 
                 </View>
-
             </View>
 
 
             <FlatList
-                data={products}
-                keyExtractor={item => item}
-                renderItem={({ item }) => (
-                    <ListLayout name={item} removeItem={() => handleProductRemove(item)}></ListLayout>
-                )}
+            data={products}
+            keyExtractor={(item) => item.name}
+            renderItem={({ item }) => (
+              <Product name={item.name} done={item.done}
+                onRemove={() => handleProductRemove(item.name)}
+                RadioPress={() => handleProductDone(item.name)}
+              />)}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={products.length <= 0 && styles.list}
                 ListEmptyComponent={() => (
@@ -179,7 +203,6 @@ const styles = StyleSheet.create({
         paddingBottom:20,
 
     },
-    list: {
-
-    }
+    list: {},
+    imageListEmpty:{}
 })
